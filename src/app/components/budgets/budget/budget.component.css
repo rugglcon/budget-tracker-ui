@@ -1,0 +1,11 @@
+.budget-container {
+    margin: 20px;
+}
+
+.under-budget {
+    color: green;
+}
+
+.over-budget {
+    color: red;
+}

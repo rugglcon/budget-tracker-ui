@@ -1,0 +1,14 @@
+<div class="budget-container" *ngIf="budget">
+    <div class="card">
+        <h3 class="card-header" [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
+            {{budget.total | currency}}
+        </h3>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let expense of budget.expenses">
+                    <app-expense-list-item [expense]="expense"></app-expense-list-item>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
