@@ -18,7 +18,7 @@ export class AuthService {
   constructor(private authResource: AuthResource) { }
 
   public isAuthenticated(): boolean {
-    return this.loggedIn;
+    return this.loggedIn || localStorage.getItem('token') != null;
   }
 
   async login(credentials: Credentials): Promise<boolean> {

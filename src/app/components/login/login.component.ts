@@ -13,7 +13,11 @@ export class LoginComponent {
   username: FormControl = new FormControl('', [Validators.required]);
   password: FormControl = new FormControl('', [Validators.required]);
   error = '';
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigateByUrl(this.authService.redirectUrl);
+    }
+  }
 
   login(): void {
     const creds: Credentials = {
