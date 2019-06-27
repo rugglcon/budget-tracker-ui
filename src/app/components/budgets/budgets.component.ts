@@ -3,6 +3,7 @@ import { BudgetService } from '../../services/budget.service';
 import { Budget } from '../../models';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-budgets',
@@ -10,18 +11,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./budgets.component.css']
 })
 export class BudgetsComponent implements OnInit {
-  allBudgets: Observable<Budget[]>;
-  selectedBudget: Budget;
+  allBudgets!: Observable<Budget[]>;
 
-  constructor(private bService: BudgetService, private router: Router) { }
+  constructor(private bService: BudgetService, private router: Router, private title: Title) { }
 
   ngOnInit() {
-    console.log('hi');
     this.allBudgets = this.bService.allBudgets;
+    this.title.setTitle('All Budgets');
   }
 
   goToBudget(budget: Budget): void {
     console.log('navigating:', budget);
-    this.router.navigate(['/budget', budget.id]);
+    this.router.navigate(['/budgets', budget.id]);
   }
 }

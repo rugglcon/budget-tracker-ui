@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Config } from '../config';
-import { Budget } from '../models/budget.model';
+import { Budget, NewBudget } from '../models/budget.model';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class BudgetResource {
         return this.http.delete<void>(`${this.url}/${budget.id}`).toPromise();
     }
 
-    create(budget: Budget): Promise<Budget> {
+    create(budget: NewBudget): Promise<Budget> {
         return this.http.post<Budget>(this.url, budget).toPromise();
     }
 

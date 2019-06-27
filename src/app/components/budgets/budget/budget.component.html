@@ -4,11 +4,16 @@
             {{budget.total | currency}}
         </h3>
         <div class="card-body">
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush" *ngIf="budget.expenses.length > 0">
                 <li class="list-group-item" *ngFor="let expense of budget.expenses">
                     <app-expense-list-item [expense]="expense"></app-expense-list-item>
                 </li>
             </ul>
+            <div *ngIf="budget.expenses.length === 0" class="row">
+                <ngb-alert [type]="'primary'" class="col-12">
+                    You currently have no expenses under this budget.
+                </ngb-alert>
+            </div>
         </div>
     </div>
 </div>

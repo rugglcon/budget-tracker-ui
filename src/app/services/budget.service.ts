@@ -1,21 +1,21 @@
 import { Observable, BehaviorSubject, of, ReplaySubject } from 'rxjs';
-import { Budget } from './../models/budget.model';
+import { Budget, NewBudget } from './../models/budget.model';
 import { BudgetResource } from './../resources/budget.resource';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class BudgetService {
-    private _allBudgets: Budget[];
+
+    private _allBudgets: Budget[] = [];
     private _budgetObservable: ReplaySubject<Budget[]> = new ReplaySubject(1);
-    currentBudget: BehaviorSubject<Budget> = new BehaviorSubject(null);
+    currentBudget: BehaviorSubject<Budget | null> = new BehaviorSubject<Budget | null>(null);
 
     constructor(private budgetResource: BudgetResource) {
-        if (this._allBudgets == null) {
-            this.budgetResource.getAll().then(budgets => {
-                this._allBudgets = [...budgets];
-                this._budgetObservable.next(this._allBudgets);
-            });
-        }
+        this.budgetResource.getAll().then(budgets => {
+            console.log('got all budgets for user', budgets);
+            this._allBudgets = [...budgets];
+            this._budgetObservable.next(this._allBudgets);
+        });
     }
 
     get allBudgets(): Observable<Budget[]> {
@@ -26,15 +26,35 @@ export class BudgetService {
         return this.budgetResource.delete(budget);
     }
 
-    async create(budget: Budget): Promise<Budget> {
+    async create(budget: NewBudget): Promise<Budget> {
         const budg = await this.budgetResource.create(budget);
         this._allBudgets.push(budg);
         this._budgetObservable.next(this._allBudgets);
         return budg;
     }
 
-    update(oldId: number, newBudget: Budget): Promise<Budget> {
-        return this.budgetResource.update(oldId, newBudget);
+    async update(oldId: number, newBudget: Budget): Promise<Budget> {
+        const updated = await this.budgetResource.update(oldId, newBudget);
+        const current = this._allBudgets.findIndex(x => x.id === oldId);
+        if (current !== -1) {
+            this._allBudgets[current] = updated;
+        } else {
+            this._allBudgets.push(updated);
+        }
+        this._allBudgets = [...this._allBudgets];
+        this._budgetObservable.next(this._allBudgets);
+        return updated;
+    }
+
+    updateInCache(budget: Budget): Budget {
+        const current = this._allBudgets.findIndex(x => x.id === budget.id);
+        const newBudget = {...budget};
+        if (current === -1) {
+            throw new Error(`Budget with id [${newBudget.id}] was not found!`);
+        }
+        this._allBudgets[current] = newBudget;
+
+        return newBudget;
     }
 
     getAll(): void {
@@ -44,7 +64,7 @@ export class BudgetService {
         });
     }
 
-    getBudget(budget: number): Observable<Budget> {
-        return this.budgetResource.getBudget(budget);
+    getBudget(budget: number): Budget {
+        return this._allBudgets.find(b => b.id === budget) as Budget;
     }
 }

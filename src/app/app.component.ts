@@ -9,6 +9,5 @@ export class AppComponent {
   title = 'Budget Tracker';
 
   constructor(public router: Router) {
-    console.log('about to get title');
   }
 }

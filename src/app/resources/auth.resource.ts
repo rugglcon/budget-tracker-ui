@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Config } from '../config';
 import { Injectable } from '@angular/core';
-import { LoginSuccess, NewUser } from '../models/login-success.model';
+import { NewUser } from '../models/login-success.model';
 import { Credentials } from '../models/credentials.model';
+import { TokenResponse } from '../services/auth.service';
 
 @Injectable()
 export class AuthResource {
@@ -10,14 +11,11 @@ export class AuthResource {
     constructor(private http: HttpClient) {
     }
 
-    login(credentials: Credentials): Promise<LoginSuccess> {
-        return this.http.post<LoginSuccess>(this.url + '/login', credentials).toPromise().then(data => {
-            console.log(data);
-            return data;
-        });
+    login(credentials: Credentials): Promise<TokenResponse> {
+        return this.http.post<TokenResponse>(this.url + '/login', credentials).toPromise();
     }
 
-    signup(credentials: NewUser): Promise<LoginSuccess> {
-        return this.http.post<LoginSuccess>(this.url, credentials).toPromise();
+    signup(credentials: NewUser): Promise<TokenResponse> {
+        return this.http.post<TokenResponse>(this.url, credentials).toPromise();
     }
 }

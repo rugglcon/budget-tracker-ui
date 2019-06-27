@@ -1,5 +1,7 @@
 export interface NewBudget {
-    name: string
+    name: string,
+    total: number,
+    ownerId: number
 }
 
 export interface Budget {
@@ -10,7 +12,7 @@ export interface Budget {
     /**
      * ID of the owner of this budget
      */
-    owner: number,
+    ownerId: number,
     /**
      * title the owner gives the budget
      */

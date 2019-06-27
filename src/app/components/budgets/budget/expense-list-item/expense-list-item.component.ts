@@ -10,24 +10,29 @@ import { BudgetService } from '../../../../services/budget.service';
 })
 export class ExpenseListItemComponent implements OnInit {
     @Input()
-    expense: Expense;
+    expense!: Expense;
 
-    budget: Budget;
+    budget!: Budget;
     editMode = false;
 
     constructor(private eService: ExpenseService, private bService: BudgetService) {}
 
     ngOnInit(): void {
         this.bService.currentBudget.subscribe(b => {
-            this.budget = b;
+            if (b) {
+                this.budget = b;
+            }
         });
     }
 
     handleExpenseDelete(): void {
         this.eService.delete(this.expense).then(() => {
-            const index = this.budget.expenses.map(e => e.id).find(id => this.expense.id === id);
-            this.budget.expenses.splice(index, 1);
-            this.bService.currentBudget.next(this.budget);
+            const index = this.budget.expenses.map(e => e.id).indexOf(this.expense.id);
+            if (index !== -1) {
+                this.budget.expenses.splice(index, 1);
+                const updated = this.bService.updateInCache(this.budget);
+                this.bService.currentBudget.next(updated);
+            }
         });
     }
 
