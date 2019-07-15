@@ -1,18 +1,32 @@
 <div class="budget-container" *ngIf="budget">
     <div class="card">
-        <h3 class="card-header" [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
-            {{budget.total | currency}}
+        <h3 class="card-header">
+            {{budget.name}} -
+            <span [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
+                {{spent | currency}} / {{budget.total | currency}}
+            </span>
+
         </h3>
         <div class="card-body">
-            <ul class="list-group list-group-flush" *ngIf="budget.expenses.length > 0">
-                <li class="list-group-item" *ngFor="let expense of budget.expenses">
-                    <app-expense-list-item [expense]="expense"></app-expense-list-item>
-                </li>
-            </ul>
-            <div *ngIf="budget.expenses.length === 0" class="row">
-                <ngb-alert [type]="'primary'" class="col-12">
-                    You currently have no expenses under this budget.
-                </ngb-alert>
+            <div>
+            </div>
+            <div>
+                <h5>Expenses</h5>
+                <ul class="list-group" *ngIf="expenses?.length > 0">
+                    <li class="list-group-item justify-content-between align-items-center" *ngFor="let expense of expenses">
+                        <app-expense-list-item [expense]="expense" (delete)="handleExpenseDelete($event)" (edited)="handleEditExpense($event)"></app-expense-list-item>
+                    </li>
+                </ul>
+                <div *ngIf="expenses?.length === 0" class="row">
+                    <ngb-alert [type]="'primary'" class="col-12">
+                        You currently have no expenses under this budget.
+                    </ngb-alert>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary" (click)="openModal()">
+                        Add Expense
+                    </button>
+                </div>
             </div>
         </div>
     </div>

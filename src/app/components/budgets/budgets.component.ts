@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BudgetService } from '../../services/budget.service';
-import { Budget } from '../../models';
+import { SimpleBudget } from '../../models';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -11,7 +11,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./budgets.component.css']
 })
 export class BudgetsComponent implements OnInit {
-  allBudgets!: Observable<Budget[]>;
+  allBudgets!: Observable<SimpleBudget[]>;
 
   constructor(private bService: BudgetService, private router: Router, private title: Title) { }
 
@@ -20,7 +20,7 @@ export class BudgetsComponent implements OnInit {
     this.title.setTitle('All Budgets');
   }
 
-  goToBudget(budget: Budget): void {
+  goToBudget(budget: SimpleBudget): void {
     console.log('navigating:', budget);
     this.router.navigate(['/budgets', budget.id]);
   }

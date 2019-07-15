@@ -1,0 +1,9 @@
+export enum HTTP_STATUS_CODES {
+    UNAUTHORIZED = 401,
+    NOT_FOUND = 404,
+    SERVER_ERROR = 500,
+    FORBIDDEN = 403,
+    CLIENT_ERROR = 400,
+    OK = 200,
+    NO_CONTENT = 204
+}

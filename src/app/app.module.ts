@@ -1,8 +1,8 @@
 import { ExpenseService } from './services/expense.service';
 import { AuthResource } from './resources/auth.resource';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -24,6 +24,13 @@ import { Interceptor } from './interceptors/interceptor';
 import { appRoutes } from './app.routes';
 import { BudgetResolver } from './resolvers/budget.resolver';
 import { NotFoundComponent } from './components/errors/not-found.component';
+import { ExpenseCache } from './cache/expense.cache';
+import { ExpenseCreateComponent } from './components/budgets/budget/expense-create/expense-create.component';
+import { LogoutComponent } from './components/logout/logout.component';
+
+export const budgetFactory = (provider: BudgetService) => {
+  return () => provider.getAll().catch(err => console.log(err));
+};
 
 @NgModule({
   declarations: [
@@ -36,7 +43,9 @@ import { NotFoundComponent } from './components/errors/not-found.component';
     HeaderComponent,
     BudgetCreateComponent,
     SignupComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ExpenseCreateComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -58,11 +67,17 @@ import { NotFoundComponent } from './components/errors/not-found.component';
       useClass: Interceptor,
       multi: true
     },
-    BudgetResolver
+    BudgetResolver,
+    ExpenseCache,
+    { provide: APP_INITIALIZER, useFactory: budgetFactory, deps: [BudgetService], multi: true },
+    NgbActiveModal
   ],
   exports: [
     RouterModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ExpenseCreateComponent
+  ]
 })
 export class AppModule { }

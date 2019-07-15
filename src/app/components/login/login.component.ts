@@ -15,7 +15,7 @@ export class LoginComponent {
   error = '';
   constructor(private authService: AuthService, private router: Router) {
     if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl(this.authService.redirectUrl);
+      this.router.navigateByUrl(this.authService.redirectUrl ? this.authService.redirectUrl : '/budgets');
     }
   }
 
@@ -27,7 +27,7 @@ export class LoginComponent {
     console.log('credentials', creds);
     this.authService.login(creds).then(success => {
       if (success) {
-        this.router.navigateByUrl(this.authService.redirectUrl);
+        this.router.navigateByUrl(this.authService.redirectUrl ? this.authService.redirectUrl : '/budgets');
       } else {
         this.error = 'Invalid credentials';
       }

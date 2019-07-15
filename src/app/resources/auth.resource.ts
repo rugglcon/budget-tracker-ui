@@ -15,6 +15,10 @@ export class AuthResource {
         return this.http.post<TokenResponse>(this.url + '/login', credentials).toPromise();
     }
 
+    logout(): Promise<void> {
+        return this.http.post<void>(this.url + '/logout', null).toPromise();
+    }
+
     signup(credentials: NewUser): Promise<TokenResponse> {
         return this.http.post<TokenResponse>(this.url, credentials).toPromise();
     }

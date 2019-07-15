@@ -7,10 +7,12 @@ import { BudgetComponent } from './components/budgets/budget/budget.component';
 import { BudgetCreateComponent } from './components/budgets/budget-create/budget-create.component';
 import { BudgetResolver } from './resolvers/budget.resolver';
 import { NotFoundComponent } from './components/errors/not-found.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 export const appRoutes: Routes = [
     { path: '', redirectTo: 'budgets', pathMatch: 'full' },
     { path: '404', component: NotFoundComponent },
+    { path: 'logout', component: LogoutComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     // { path: 'profile', component: ProfileComponent },

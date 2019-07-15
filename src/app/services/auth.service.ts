@@ -13,7 +13,7 @@ export class AuthService {
 
   token!: string;
 
-  public redirectUrl!: string;
+  public redirectUrl?: string;
 
   constructor(private authResource: AuthResource) { }
 
@@ -49,11 +49,12 @@ export class AuthService {
     return null;
   }
 
-  logout(): boolean {
+  async logout(): Promise<boolean> {
     this.loggedIn = false;
     delete this.redirectUrl;
     this.removeToken();
     delete this.token;
+    await this.authResource.logout();
     return true;
   }
 

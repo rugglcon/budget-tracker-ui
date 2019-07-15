@@ -1,7 +1,6 @@
-import { Budget } from './../../../../models/budget.model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { ExpenseService } from '../../../../services/expense.service';
-import { Expense } from '../../../../models/budget.model';
+import { SimpleExpense } from '../../../../models/budget.model';
 import { BudgetService } from '../../../../services/budget.service';
 
 @Component({
@@ -10,33 +9,25 @@ import { BudgetService } from '../../../../services/budget.service';
 })
 export class ExpenseListItemComponent implements OnInit {
     @Input()
-    expense!: Expense;
+    expense!: SimpleExpense;
 
-    budget!: Budget;
     editMode = false;
+    @Output() edited = new EventEmitter<SimpleExpense>();
+    @Output() delete = new EventEmitter<SimpleExpense>();
 
     constructor(private eService: ExpenseService, private bService: BudgetService) {}
 
     ngOnInit(): void {
-        this.bService.currentBudget.subscribe(b => {
-            if (b) {
-                this.budget = b;
-            }
-        });
+        if (!this.expense) {
+            throw new ReferenceError('An expense must be provided.');
+        }
     }
 
     handleExpenseDelete(): void {
-        this.eService.delete(this.expense).then(() => {
-            const index = this.budget.expenses.map(e => e.id).indexOf(this.expense.id);
-            if (index !== -1) {
-                this.budget.expenses.splice(index, 1);
-                const updated = this.bService.updateInCache(this.budget);
-                this.bService.currentBudget.next(updated);
-            }
-        });
+        this.delete.emit(this.expense);
     }
 
     handleExpenseEdit(): void {
-
+        this.edited.emit(this.expense);
     }
 }

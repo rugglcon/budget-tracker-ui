@@ -16,7 +16,7 @@ export class SignupComponent {
     constructor(private authService: AuthService, private router: Router,
         fb: FormBuilder) {
         if (this.authService.isAuthenticated()) {
-            this.router.navigateByUrl(this.authService.redirectUrl);
+            this.router.navigateByUrl(this.authService.redirectUrl ? this.authService.redirectUrl : '/budgets');
         }
         this.signupForm = fb.group({
             userName: new FormControl('', Validators.required),
