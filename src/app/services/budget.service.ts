@@ -3,18 +3,28 @@ import { SimpleBudget, NewBudget, SimpleExpense } from './../models/budget.model
 import { BudgetResource } from './../resources/budget.resource';
 import { Injectable } from '@angular/core';
 import { ExpenseCache } from '../cache/expense.cache';
+import { DataCache } from '../models/data-cache.model';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class BudgetService {
+export class BudgetService implements DataCache {
 
     private _allBudgets: SimpleBudget[] = [];
     private _budgetObservable: ReplaySubject<SimpleBudget[]> = new ReplaySubject(1);
+    private _hasSuccessfullyRequestedBudgets = false;
     currentBudget: BehaviorSubject<SimpleBudget | null> = new BehaviorSubject<SimpleBudget | null>(null);
 
-    constructor(private budgetResource: BudgetResource, private expenseCache: ExpenseCache) {}
+    constructor(private budgetResource: BudgetResource, private expenseCache: ExpenseCache,
+                private authService: AuthService) {
+        this.authService.registerDataCache(this);
+    }
 
     get allBudgets(): Observable<SimpleBudget[]> {
         return this._budgetObservable.asObservable();
+    }
+
+    get hasSuccessfullyRequestedBudgets(): boolean {
+        return this._hasSuccessfullyRequestedBudgets;
     }
 
     delete(budget: SimpleBudget): Promise<void> {
@@ -53,10 +63,15 @@ export class BudgetService {
     }
 
     async getAll(): Promise<void> {
-        const budgets = await this.budgetResource.getAll();
-        console.log('got all budgets for user', budgets);
-        this._allBudgets = [...budgets];
-        this._budgetObservable.next(budgets);
+        try {
+            const budgets = await this.budgetResource.getAll();
+            this._hasSuccessfullyRequestedBudgets = true;
+            console.log('got all budgets for user', budgets);
+            this._allBudgets = [...budgets];
+            this._budgetObservable.next(budgets);
+        } catch (e) {
+            this._hasSuccessfullyRequestedBudgets = false;
+        }
     }
 
     getBudget(budget: number): SimpleBudget {
@@ -81,5 +96,18 @@ export class BudgetService {
 
         this.expenseCache.set(budgetId, expenses);
         return expenses;
+    }
+
+    clearExpenses(): void {
+        this.expenseCache.clear();
+    }
+
+    clearData(): void {
+        console.log('clearing data in budget service');
+        this._budgetObservable = new ReplaySubject(1);
+        this._allBudgets = [];
+        this._hasSuccessfullyRequestedBudgets = false;
+        this.currentBudget = new BehaviorSubject<SimpleBudget | null>(null);
+        this.clearExpenses();
     }
 }

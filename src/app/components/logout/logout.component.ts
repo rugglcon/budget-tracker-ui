@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent {
     constructor(authService: AuthService, router: Router) {
-        authService.logout();
-        router.navigate(['/login']);
+        authService.logout().then(() => router.navigate(['/login']));
     }
 }

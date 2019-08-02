@@ -3,6 +3,7 @@ import { AuthResource } from '../resources/auth.resource';
 import { Credentials } from '../models/credentials.model';
 import { Router } from '@angular/router';
 import { NewUser, LoginSuccess } from '../models/login-success.model';
+import { DataCache } from '../models/data-cache.model';
 
 @Injectable()
 /**
@@ -10,6 +11,7 @@ import { NewUser, LoginSuccess } from '../models/login-success.model';
  */
 export class AuthService {
   private loggedIn = false;
+  private registeredDataCache: DataCache[] = [];
 
   token!: string;
 
@@ -49,12 +51,17 @@ export class AuthService {
     return null;
   }
 
+  registerDataCache(dataCache: DataCache): void {
+    this.registeredDataCache.push(dataCache);
+  }
+
   async logout(): Promise<boolean> {
-    this.loggedIn = false;
+    await this.authResource.logout();
+    this.cleanupData();
     delete this.redirectUrl;
+    this.loggedIn = false;
     this.removeToken();
     delete this.token;
-    await this.authResource.logout();
     return true;
   }
 
@@ -84,6 +91,10 @@ export class AuthService {
       console.log('error on signup', err, 'creds', creds);
       return false;
     }
+  }
+
+  cleanupData(): void {
+    this.registeredDataCache.forEach(cache => cache.clearData());
   }
 }
 
