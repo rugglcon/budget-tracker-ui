@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:prod": "ng build --prod",
-    "start:prod": "export NODE_ENV=production && ng serve --host 0.0.0.0"
+    "start:prod": "ng serve --host 0.0.0.0 --configuration=prod"
   },
   "private": true,
   "dependencies": {
