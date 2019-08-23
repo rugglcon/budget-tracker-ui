@@ -28,7 +28,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.budgetSub$ = this.route.data.subscribe(async b => {
             if (b) {
-                console.log('got the budget', b);
                 this.budget = b.budget;
                 this.title.setTitle(`Budget - ${this.budget.name}`);
                 this.expenses = await this.bService.getExpensesByBudgetId(this.budget.id);
@@ -41,9 +40,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
 
     checkUnderBudget(): boolean {
         if (this.expenses.length > 0) {
-            console.log('have expenses', this.expenses);
             this.spent = this.expenses.map(x => x.cost).reduce((x, y) => x + y, 0);
-            console.log('got spent', this.spent);
             return this.underBudget = this.spent < this.budget.total;
         }
         return true;
@@ -59,7 +56,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
 
     handleAddExpense(newExpense: NewExpense): void {
         this.addingExpense = true;
-        console.log('creating expense', newExpense);
         this.eService.create(newExpense).then(createdExpense => {
             this.addingExpense = false;
             this.expenses = [...this.expenses, createdExpense];

@@ -21,7 +21,6 @@ export class BudgetsComponent implements OnInit {
   }
 
   goToBudget(budget: SimpleBudget): void {
-    console.log('navigating:', budget);
     this.router.navigate(['/budgets', budget.id]);
   }
 }

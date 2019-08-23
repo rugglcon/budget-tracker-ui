@@ -28,7 +28,7 @@ export class LoginComponent {
     } else {
       budgetRequestPromise = Promise.resolve();
     }
-    budgetRequestPromise.then(() => { console.log('doing redirect'); this.doRedirect(); });
+    budgetRequestPromise.then(() => this.doRedirect());
   }
 
   doRedirect(): void {
@@ -40,7 +40,6 @@ export class LoginComponent {
       userName: this.username.value,
       password: this.password.value
     };
-    console.log('credentials', creds);
     this.authService.login(creds).then(success => {
       if (success) {
         this.requestBudgets();

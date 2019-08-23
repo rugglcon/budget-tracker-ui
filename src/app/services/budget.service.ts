@@ -66,7 +66,6 @@ export class BudgetService implements DataCache {
         try {
             const budgets = await this.budgetResource.getAll();
             this._hasSuccessfullyRequestedBudgets = true;
-            console.log('got all budgets for user', budgets);
             this._allBudgets = [...budgets];
             this._budgetObservable.next(budgets);
         } catch (e) {
@@ -103,7 +102,6 @@ export class BudgetService implements DataCache {
     }
 
     clearData(): void {
-        console.log('clearing data in budget service');
         this._budgetObservable = new ReplaySubject(1);
         this._allBudgets = [];
         this._hasSuccessfullyRequestedBudgets = false;

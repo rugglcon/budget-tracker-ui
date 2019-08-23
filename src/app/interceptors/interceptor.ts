@@ -28,7 +28,6 @@ export class Interceptor implements HttpInterceptor {
                     status: error.status
                 };
                 if (error.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
-                    console.log('user not logged in; redirecting to /login');
                     this.authService.removeToken();
                     this.router.navigate(['/login']);
                 }

@@ -19,8 +19,6 @@ export class ExpenseCreateComponent implements OnInit {
             throw new ReferenceError('A budget id is required.');
         }
 
-        console.log('opened expense create modal');
-
         this.createForm = this.fb.group({
             title: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
             cost: new FormControl(null, [Validators.required, Validators.min(.01)]),

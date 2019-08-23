@@ -35,7 +35,6 @@ export class AuthService {
       return true;
     } catch (err) {
       this.loggedIn = false;
-      console.log('error logging in', err, 'credentials', credentials);
       return false;
     }
   }
@@ -88,7 +87,6 @@ export class AuthService {
       this.setToken(newUser);
       return true;
     } catch (err) {
-      console.log('error on signup', err, 'creds', creds);
       return false;
     }
   }
