@@ -20,12 +20,4 @@
       You currently have no budgets. To create one, click <a [routerLink]="['/budget-create']">here</a>.
     </ngb-alert>
   </div>
-  <div class="card" *ngIf="selectedBudget">
-    <div class="card-header">
-      Name: {{selectedBudget.name}}
-    </div>
-    <div class="card-block">
-      <h5 class="card-title">Owner: {{selectedBudget.ownerId}}</h5>
-    </div>
-  </div>
 </div>
