@@ -87,6 +87,7 @@ export class AuthService {
       this.setToken(newUser);
       return true;
     } catch (err) {
+      console.log(err);
       return false;
     }
   }

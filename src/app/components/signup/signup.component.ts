@@ -49,7 +49,12 @@ export class SignupComponent {
         }
 
         const newUser = this.signupForm.value as NewUser;
-        await this.authService.signup(newUser);
-        this.router.navigateByUrl('/');
+        const success = await this.authService.signup(newUser);
+        if (success) {
+            this.router.navigateByUrl('/');
+            return;
+        }
+
+        this.error = 'Something went wrong, please try again.';
     }
 }
