@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthResource } from '../resources/auth.resource';
 import { Credentials } from '../models/credentials.model';
-import { Router } from '@angular/router';
-import { NewUser, LoginSuccess } from '../models/login-success.model';
+import { NewUser } from '../models/login-success.model';
 import { DataCache } from '../models/data-cache.model';
 
 @Injectable()

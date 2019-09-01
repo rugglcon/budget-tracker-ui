@@ -29,6 +29,8 @@ export class BudgetCreateComponent implements OnInit {
 
     handleSubmit(): void {
         if (this.creating) { return; }
+        if (this.budgetCreateForm.invalid) { return; }
+        console.log(this.budgetCreateForm);
         this.creating = true;
         const newBudget = this.budgetCreateForm.value as NewBudget;
         const currentUser = this.authService.getTokenDetails();

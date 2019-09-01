@@ -5,6 +5,7 @@
             <span [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
                 {{spent | currency}} / {{budget.total | currency}}
             </span>
+            <button class="btn btn-danger float-right" (click)="delete()">Delete</button>
 
         </h3>
         <div class="card-body">

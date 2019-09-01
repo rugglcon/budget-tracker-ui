@@ -27,8 +27,15 @@ export class BudgetService implements DataCache {
         return this._hasSuccessfullyRequestedBudgets;
     }
 
-    delete(budget: SimpleBudget): Promise<void> {
-        return this.budgetResource.delete(budget);
+    async delete(budget: SimpleBudget): Promise<void> {
+        await this.budgetResource.delete(budget);
+        const index = this._allBudgets.findIndex(x => x.id === budget.id);
+        if (index === -1) {
+            return;
+        }
+        this._allBudgets.splice(index, 1);
+        this._allBudgets = [...this._allBudgets];
+        this._budgetObservable.next(this._allBudgets);
     }
 
     async create(budget: NewBudget): Promise<SimpleBudget> {

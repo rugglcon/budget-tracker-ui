@@ -39,6 +39,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
     }
 
     checkUnderBudget(): boolean {
+        this.spent = 0;
         if (this.expenses.length > 0) {
             this.spent = this.expenses.map(x => x.cost).reduce((x, y) => x + y, 0);
             return this.underBudget = this.spent < this.budget.total;
@@ -67,7 +68,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
     handleExpenseDelete(expense: SimpleExpense): void {
         this.eService.delete(expense).then(() => {
             const index = this.expenses.findIndex(x => x.id === expense.id);
-            if (index) {
+            if (index !== -1) {
                 this.expenses.splice(index, 1);
                 this.expenses = [...this.expenses];
                 this.bService.updateExpensesByBudgetId(this.budget.id, this.expenses);
@@ -79,13 +80,17 @@ export class BudgetComponent implements OnInit, OnDestroy {
     handleEditExpense(expense: SimpleExpense): void {
         this.eService.update(expense.id, expense).then(updated => {
             const index = this.expenses.findIndex(x => x.id === expense.id);
-            if (index) {
+            if (index !== -1) {
                 this.expenses[index] = updated;
                 this.expenses = [...this.expenses];
                 this.bService.updateExpensesByBudgetId(this.budget.id, this.expenses);
                 this.checkUnderBudget();
             }
         });
+    }
+
+    delete(): void {
+        this.bService.delete(this.budget).then(() => this.router.navigateByUrl('/budgets'));
     }
 
     ngOnDestroy(): void {

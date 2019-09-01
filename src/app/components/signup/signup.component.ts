@@ -3,6 +3,7 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { NewUser } from 'src/app/models/login-success.model';
+import { BudgetService } from 'src/app/services/budget.service';
 
 @Component({
     templateUrl: './signup.component.html',
@@ -14,7 +15,7 @@ export class SignupComponent {
     passwordMatch = true;
 
     constructor(private authService: AuthService, private router: Router,
-        fb: FormBuilder) {
+        fb: FormBuilder, private budgetService: BudgetService) {
         if (this.authService.isAuthenticated()) {
             this.router.navigateByUrl(this.authService.redirectUrl ? this.authService.redirectUrl : '/budgets');
         }
@@ -51,10 +52,24 @@ export class SignupComponent {
         const newUser = this.signupForm.value as NewUser;
         const success = await this.authService.signup(newUser);
         if (success) {
-            this.router.navigateByUrl('/');
+            this.requestBudgets();
             return;
         }
 
         this.error = 'Something went wrong, please try again.';
     }
+
+    requestBudgets(): void {
+        let budgetRequestPromise;
+        if (!this.budgetService.hasSuccessfullyRequestedBudgets) {
+          budgetRequestPromise = this.budgetService.getAll();
+        } else {
+          budgetRequestPromise = Promise.resolve();
+        }
+        budgetRequestPromise.then(() => this.doRedirect());
+      }
+
+      doRedirect(): void {
+        this.router.navigateByUrl(this.authService.redirectUrl ? this.authService.redirectUrl : '/budgets');
+      }
 }

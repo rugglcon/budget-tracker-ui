@@ -1,7 +1,7 @@
 import { ExpenseService } from './services/expense.service';
 import { AuthResource } from './resources/auth.resource';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -27,6 +27,9 @@ import { NotFoundComponent } from './components/errors/not-found.component';
 import { ExpenseCache } from './cache/expense.cache';
 import { ExpenseCreateComponent } from './components/budgets/budget/expense-create/expense-create.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { JSErrorHandler } from './interceptors/error-handler';
+import { JSErrorService } from './services/error.service';
+import { JSErrorResource } from './resources/error.resource';
 
 export const budgetFactory = (provider: BudgetService) => {
   return () => provider.getAll().catch(err => console.log(err));
@@ -67,10 +70,16 @@ export const budgetFactory = (provider: BudgetService) => {
       useClass: Interceptor,
       multi: true
     },
+    {
+      provide: ErrorHandler,
+      useClass: JSErrorHandler
+    },
     BudgetResolver,
     ExpenseCache,
     { provide: APP_INITIALIZER, useFactory: budgetFactory, deps: [BudgetService], multi: true },
-    NgbActiveModal
+    NgbActiveModal,
+    JSErrorService,
+    JSErrorResource
   ],
   exports: [
     RouterModule
