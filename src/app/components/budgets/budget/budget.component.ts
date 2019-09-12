@@ -20,6 +20,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
     budgetSub$!: Subscription;
     addingExpense = false;
     spent = 0;
+    editing = false;
 
     constructor(private bService: BudgetService, private eService: ExpenseService,
         private router: Router, private title: Title, private route: ActivatedRoute,

@@ -1,16 +1,23 @@
 <div class="budget-container" *ngIf="budget">
-    <div class="card">
+    <div class="card" *ngIf="!editing">
         <h3 class="card-header">
             {{budget.name}} -
             <span [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
                 {{spent | currency}} / {{budget.total | currency}}
             </span>
-            <button class="btn btn-danger float-right" (click)="delete()">Delete</button>
-
+            <div class="float-right dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button"
+                        id="moreDropdown" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu" aria-labelledby="moreDropdown">
+                    <button class="dropdown-item" (click)="editing = true">Edit</button>
+                    <button class="dropdown-item" (click)="delete()">Delete</button>
+                </div>
+            </div>
         </h3>
         <div class="card-body">
-            <div>
-            </div>
             <div>
                 <h5>Expenses</h5>
                 <ul class="list-group" *ngIf="expenses?.length > 0">
@@ -31,4 +38,5 @@
             </div>
         </div>
     </div>
+    <app-budget-edit (editing)="editing = false" *ngIf="editing" [spent]="spent"></app-budget-edit>
 </div>

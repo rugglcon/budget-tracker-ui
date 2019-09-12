@@ -30,6 +30,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { JSErrorHandler } from './interceptors/error-handler';
 import { JSErrorService } from './services/error.service';
 import { JSErrorResource } from './resources/error.resource';
+import { BudgetEditComponent } from './components/budgets/budget/budget-edit/budget-edit.component';
 
 export const budgetFactory = (provider: BudgetService) => {
   return () => provider.getAll().catch(err => console.log(err));
@@ -48,7 +49,8 @@ export const budgetFactory = (provider: BudgetService) => {
     SignupComponent,
     NotFoundComponent,
     ExpenseCreateComponent,
-    LogoutComponent
+    LogoutComponent,
+    BudgetEditComponent
   ],
   imports: [
     BrowserModule,
