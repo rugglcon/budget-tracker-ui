@@ -20,8 +20,6 @@ export class BudgetEditComponent implements OnInit {
     }
 
     submit(): void {
-        this.budgetService.update(this.budget.id, this.budget).then(b => {
-            this.editing.emit();
-        });
+
     }
 }

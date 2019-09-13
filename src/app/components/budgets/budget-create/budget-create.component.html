@@ -18,7 +18,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input id="total" formControlName="total" type="number" class="form-control" placeholder="1" required>
+                                <input id="total" formControlName="total" type="tel" class="form-control" placeholder="1" required>
                             </div>
                             <div *ngIf="budgetCreateForm.get('total')?.touched && budgetCreateForm.get('total')?.hasError('min')">
                                 <p class="text-danger">You must specify an amount greater than $0.</p>

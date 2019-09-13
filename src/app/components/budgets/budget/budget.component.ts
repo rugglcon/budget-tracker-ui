@@ -90,6 +90,10 @@ export class BudgetComponent implements OnInit, OnDestroy {
         });
     }
 
+    handleEditBudget(): void {
+        this.bService.update(this.budget.id, this.budget).then(() => this.editing = false);
+    }
+
     delete(): void {
         this.bService.delete(this.budget).then(() => this.router.navigateByUrl('/budgets'));
     }

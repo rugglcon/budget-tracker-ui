@@ -1,6 +1,6 @@
 <div class="budget-container" *ngIf="budget">
-    <div class="card" *ngIf="!editing">
-        <h3 class="card-header">
+    <div class="card">
+        <h3 class="card-header" *ngIf="!editing">
             {{budget.name}} -
             <span [ngClass]="{'under-budget': underBudget, 'over-budget': !underBudget}">
                 {{spent | currency}} / {{budget.total | currency}}
@@ -16,6 +16,29 @@
                     <button class="dropdown-item" (click)="delete()">Delete</button>
                 </div>
             </div>
+        </h3>
+        <h3 *ngIf="editing" class="card-header">
+            <form (ngSubmit)="handleEditBudget()">
+                <div class="form-row align-items-center">
+                    <div class="col-sm-3 my-1">
+                        <input type="text" [(ngModel)]="budget.name" class="form-control" name="name">
+                    </div> -
+                    <div class="col-auto my-1">
+                        {{ spent | currency }} /
+                    </div>
+                    <div class="col-sm-3 my-1">
+                        <input class="form-control" name="total" type="tel" [(ngModel)]="budget.total">
+                    </div>
+                    <div class="col-auto my-1">
+                            <button class="btn btn-outline-secondary" type="button" (click)="editing = false">
+                                Cancel
+                            </button>
+                    </div>
+                    <div class="col-auto my-1">
+                        <button class="float-right btn btn-success" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
         </h3>
         <div class="card-body">
             <div>
@@ -38,5 +61,4 @@
             </div>
         </div>
     </div>
-    <app-budget-edit (editing)="editing = false" *ngIf="editing" [spent]="spent"></app-budget-edit>
 </div>
