@@ -28,7 +28,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.budgetSub$ = this.route.data.subscribe(async b => {
-            if (b) {
+            if (b && b.budget) {
                 this.budget = b.budget;
                 this.title.setTitle(`Budget - ${this.budget.name}`);
                 this.expenses = await this.bService.getExpensesByBudgetId(this.budget.id);
