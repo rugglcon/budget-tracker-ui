@@ -20,6 +20,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
     budgetSub$!: Subscription;
     addingExpense = false;
     spent = 0;
+    editing = false;
 
     constructor(private bService: BudgetService, private eService: ExpenseService,
         private router: Router, private title: Title, private route: ActivatedRoute,
@@ -27,7 +28,7 @@ export class BudgetComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.budgetSub$ = this.route.data.subscribe(async b => {
-            if (b) {
+            if (b && b.budget) {
                 this.budget = b.budget;
                 this.title.setTitle(`Budget - ${this.budget.name}`);
                 this.expenses = await this.bService.getExpensesByBudgetId(this.budget.id);
@@ -87,6 +88,10 @@ export class BudgetComponent implements OnInit, OnDestroy {
                 this.checkUnderBudget();
             }
         });
+    }
+
+    handleEditBudget(): void {
+        this.bService.update(this.budget.id, this.budget).then(() => this.editing = false);
     }
 
     delete(): void {
