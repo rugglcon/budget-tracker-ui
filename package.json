@@ -7,7 +7,6 @@
     "build": "ng build --source-map",
     "test": "jest",
     "lint": "ng lint",
-    "e2e": "ng e2e",
     "build:prod": "ng build --prod --progress=false",
     "start:prod": "ng serve --host 0.0.0.0 --configuration=production",
     "ci": "npm run lint && npm run test && npm run build"
@@ -40,10 +39,32 @@
     "@angular/compiler-cli": "^9.0.7",
     "@angular/language-service": "^9.0.7",
     "@types/hammerjs": "^2.0.35",
-    "@types/node": "^12.11.1",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.2",
     "codelyzer": "^5.1.2",
+    "jest": "^25.1.0",
+    "jest-preset-angular": "^8.1.2",
     "ts-node": "^8.7.0",
     "tslint": "^6.1.0",
-    "typescript": "^3.7.5"
+    "typescript": "3.7.5"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testRegex": "(/__test__/.*|(\\./)(test|spec))\\.(js?|ts?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "<rootDir>/src/tsconfig.spec.json"
+      }
+    },
+    "testPathIgnorePatterns": "<rootDir>/src/test.ts"
   }
 }
