@@ -50,6 +50,7 @@
   },
   "jest": {
     "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": ["<rootDir>/src/setupJest.ts"],
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
@@ -65,6 +66,6 @@
         "tsConfig": "<rootDir>/src/tsconfig.spec.json"
       }
     },
-    "testPathIgnorePatterns": "<rootDir>/src/test.ts"
+    "testPathIgnorePatterns": ["<rootDir>/src/test.ts"]
   }
 }
