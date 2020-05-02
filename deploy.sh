@@ -1,5 +1,6 @@
 #!/bin/bash
 
+npm cache clear --force
 npm ci
 
 npm run build:prod
