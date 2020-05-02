@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo $PATH
 npm cache clear --force
 npm ci
 
