@@ -7,7 +7,7 @@
     "build": "ng build --source-map",
     "test": "jest",
     "lint": "ng lint",
-    "build:prod": "ng build --prod --progress=false --aot --sourceMap=false --optimization",
+    "build:prod": "ng build --prod --progress=false --aot --sourceMap=false",
     "start:prod": "ng serve --host 0.0.0.0 --configuration=production",
     "ci": "npm run lint && npm run test && npm run build"
   },
