@@ -27,7 +27,7 @@ jobs:
     - name: npm install and build prod
       run: |
         npm ci
-        npm run ci
+        npm run lint && npm run test
         npm run build:prod
     - name: copy files to server
       uses: appleboy/scp-action@master
@@ -38,5 +38,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "./dist/budget-tracker/*"
         target: ${{ secrets.SSH_DEST }}
+        strip_components: 2
       env:
         CI: true
