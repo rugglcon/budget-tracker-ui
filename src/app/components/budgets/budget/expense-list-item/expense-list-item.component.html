@@ -19,7 +19,7 @@
                 <input name="title" class="form-control" [(ngModel)]="expense.title">
             </div>
             <div class="col">
-                <input name="cost" class="form-control" [(ngModel)]="expense.cost">
+                <input name="cost" class="form-control" type="number" [(ngModel)]="expense.cost">
             </div>
             <div class="col">
                 <button class="btn btn-success" (click)="handleExpenseEdit()" type="submit">Submit</button>
